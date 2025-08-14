@@ -55,7 +55,7 @@ function Game:update(dt, ...)
         current_frame = current_frame + 1
         pixel_map = raw_pixel_data[current_frame]
     end
-    if current_frame > #raw_pixel_data then pixel_map = {} end
+    if current_frame > #raw_pixel_data then pixel_map = {}; G.play_bad_apple = nil end
 end
 
 SMODS.Sound({
