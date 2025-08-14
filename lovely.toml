@@ -12,12 +12,12 @@ contents.hand =
 position = "at"
 payload = '''
     local rows = {}
-    for i = 1, 14 do
+    for i = 1, bad_apple_height - 1 do
         rows[#rows+1] = generate_row(i)
     end
     contents.hand = {n=G.UIT.R, config={align = "cm", id = 'hand_text_area', colour = darken(G.C.BLACK, 0.1), r = 0.1, emboss = 0.05, padding = 0.03}, nodes={
             {n=G.UIT.C, config={align = "cm"}, nodes={
-            {n = G.UIT.R, config = {align = "cm", minh=1, padding = 0.1}, nodes = {
+            {n = G.UIT.R, config = {align = "cm", minh=1}, nodes = {
                 { n = G.UIT.C, config = { align = "tm", padding = 0 }, nodes = rows}
             }}
         }}

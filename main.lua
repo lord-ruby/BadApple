@@ -2,9 +2,11 @@ local hex_ref = HEX
 function HEX(t)
     if type(t) == "table" then return t else return hex_ref(t or "FFFFFF") end
 end
-
-local height = 15
-local width = 20
+raw_pixel_data = SMODS.load_file("output.txt")()
+local height = raw_pixel_data.metadata and raw_pixel_data.metadata.height or 15
+local width = raw_pixel_data.metadata and raw_pixel_data.metadata.width or 20
+local scale = raw_pixel_data.metadata and raw_pixel_data.metadata.scale or 0.25
+bad_apple_height = height
 local obj
 local ids_to_not_fucking_crash = {
     "hand_mult",
@@ -21,7 +23,7 @@ function generate_row(y)
 			n = G.UIT.C,
 			config = { align = "cm" },
 			nodes = {
-                {n=G.UIT.C, config={func = 'ba_'..tostring(i).."_"..tostring(y), align = "cl", minw = 0.25, minh=0.25, r = 0.1,colour = G.C.UI.TEXT_LIGHT, id = 'hand_mult_area', emboss = 0.05, max_w = 0.25, max_h = 0.25}, nodes={
+                {n=G.UIT.C, config={func = 'ba_'..tostring(i).."_"..tostring(y), align = "cl", minw = scale, minh=scale, r = 0.1,colour = G.C.UI.TEXT_LIGHT, id = 'hand_mult_area', max_w = scale, max_h = scale}, nodes={
                   {n=G.UIT.O, config={id = ids_to_not_fucking_crash[i] or 'hand_chips', object = obj}}
                 }}
 			},
@@ -31,7 +33,6 @@ function generate_row(y)
 end
 
 pixel_map = {}
-raw_pixel_data = SMODS.load_file("output.txt")()
 for x = 1, width do
     for y = 1, height do
         G.FUNCS["ba_"..tostring(x).."_"..tostring(y)] = function(e)
@@ -47,13 +48,14 @@ current_frame = 1
 local upd_ref = Game.update
 function Game:update(dt, ...)
     upd_ref(self, dt, ...)
+    --if current_frame > #raw_pixel_data then G.play_bad_apple = nil end
     if G.play_bad_apple then
         bad_apple_dt = bad_apple_dt + dt
     end
     if G.play_bad_apple and raw_pixel_data[current_frame] and bad_apple_dt > raw_pixel_data[current_frame].offset / 1080 then
         bad_apple_dt = 0
-        current_frame = current_frame + 1
         pixel_map = raw_pixel_data[current_frame]
+        current_frame = current_frame + 1
     end
     if current_frame > #raw_pixel_data then pixel_map = {}; G.play_bad_apple = nil end
 end
