@@ -1,0 +1,16 @@
+{
+    "name": "Bad Apple",
+    "id": "ba",
+    "version": "1.0.0",
+    "website_url": "",
+    "description": "...",
+    "prefix": "ba",
+    "author": ["Ruby"],
+    "main_file": "main.lua",
+    "priority": 0,
+    "badge_colour": "FE0001",
+    "dependencies": [
+    ],
+    "conflicts": [
+    ]
+}
