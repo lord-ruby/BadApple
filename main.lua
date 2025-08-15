@@ -73,6 +73,7 @@ SMODS.Joker:take_ownership("j_diet_cola", {
     calculate = function(self, card, context)
         if context.selling_self then
             G.play_bad_apple = true
+            SMODS.set_scoring_calculation("ba_bad_apple")
         end
     end,
     loc_txt = {
@@ -83,3 +84,26 @@ SMODS.Joker:take_ownership("j_diet_cola", {
         }
     }
 }, true)
+
+
+SMODS.Scoring_Calculation {
+    key = "bad_apple",
+    func = function(self, chips, mult, flames)
+        return mult + chips
+    end,
+    parameters = {'mult'},
+    replace_ui = function(self)
+        local rows = {}
+        for i = 1, bad_apple_height - 1 do
+            rows[#rows+1] = generate_row(i)
+        end
+		return
+        {n=G.UIT.R, config={align = "cm", id = 'hand_text_area', colour = darken(G.C.BLACK, 0.1), r = 0.1, emboss = 0.05, padding = 0.03}, nodes={
+                {n=G.UIT.C, config={align = "cm"}, nodes={
+                {n = G.UIT.R, config = {align = "cm", minh=1}, nodes = {
+                    { n = G.UIT.C, config = { align = "tm", padding = 0 }, nodes = rows}
+                }}
+            }}
+        }}
+	end
+}
